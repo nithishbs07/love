@@ -5,91 +5,179 @@
 <title>For You ❤️</title>
 
 <style>
-body{margin:0;overflow:hidden;color:white;font-family:Arial}
-.bg img{position:fixed;width:100%;height:100%;object-fit:cover;opacity:0;transition:2s}
-.overlay{position:fixed;width:100%;height:100%;background:linear-gradient(to top, rgba(255,0,150,.5), rgba(0,0,0,.9))}
-.container{height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center}
-button{padding:12px 25px;border:none;border-radius:20px;background:#ff4da6;color:white;font-size:18px;margin-top:20px}
-.no{position:absolute;background:#333}
+body{
+  margin:0;
+  overflow:hidden;
+  color:white;
+  font-family:Arial;
+}
+
+/* BACKGROUND IMAGES */
+.bg img{
+  position:fixed;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:2s;
+}
+
+/* DARK OVERLAY */
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:linear-gradient(to top, rgba(255,0,150,0.5), rgba(0,0,0,0.9));
+}
+
+/* CENTER CONTENT */
+.container{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+
+h1{
+  font-size:45px;
+  text-shadow:0 0 20px pink;
+}
+
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:20px;
+  background:#ff4da6;
+  color:white;
+  font-size:18px;
+  margin-top:20px;
+  cursor:pointer;
+}
+
+.no{
+  position:absolute;
+  background:#333;
+}
+
+audio{
+  margin-top:20px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- BACKGROUND -->
 <div class="bg">
-  <img id="img1">
-  <img id="img2">
+  <img id="img1" src="https://i.ibb.co/KzrP49hG/photo1-jpeg.jpg">
+  <img id="img2" src="https://i.ibb.co/spWV2fMB/photo2-jpeg.jpg">
 </div>
 
 <div class="overlay"></div>
 
+<!-- MAIN -->
 <div class="container" id="main">
   <h1>Hey Rithika ❤️</h1>
   <button onclick="start()">Start</button>
 </div>
 
-<audio id="audio"></audio>
+<!-- AUDIO -->
+<audio id="audio" controls>
+  <source src="https://files.catbox.moe/vlrcxp.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-var img1=document.getElementById("img1");
-var img2=document.getElementById("img2");
-var audio=document.getElementById("audio");
 
-img1.src="https://i.ibb.co/KzrP49hG/photo1-jpeg.jpg";
-img2.src="https://i.ibb.co/spWV2fMB/photo2-jpeg.jpg";
-audio.src="https://files.catbox.moe/vlrcxp.mp3";
+// 🔥 SHOW FIRST IMAGE
+var imgs = document.querySelectorAll(".bg img");
+var index = 0;
+imgs[0].style.opacity = 1;
 
-var imgs=document.querySelectorAll(".bg img");
-var index=0;
-imgs[0].style.opacity=1;
-
+// 🔥 SLIDESHOW
 setInterval(function(){
-  imgs[0].style.opacity=0;
-  imgs[1].style.opacity=0;
-  imgs[index].style.opacity=1;
-  index=(index+1)%2;
+  imgs.forEach(function(img){ img.style.opacity = 0; });
+  imgs[index].style.opacity = 1;
+  index = (index + 1) % imgs.length;
 },3000);
 
-var notes=[
+// ❤️ STORY
+var notes = [
 "Do you remember the first time we met…?",
+"It didn’t feel normal…",
 "It felt special…",
-"Your smile…",
-"I never forgot you…",
+"That bus ride… your smile…",
+"When you leaned on my shoulder…",
+"Everything felt peaceful…",
+"Our rides… our laughs…",
+"Dancing together…",
+"I cooked for you…",
+"Those weren’t moments… they were feelings…",
 "I made mistakes…",
-"But I still love you…",
-"So today… ❤️"
+"I hurt you…",
+"But I never stopped loving you…",
+"Not even for a second…",
+"You were always in my heart…",
+"So today…",
+"I just want to ask you something…"
 ];
 
-var i=0;
+var i = 0;
 
-function start(){showNotes();}
+function start(){
+  showNotes();
+}
 
 function showNotes(){
-  if(i<notes.length){
-    main.innerHTML="<h1>"+notes[i]+"</h1>";
+  if(i < notes.length){
+    document.getElementById("main").innerHTML = "<h1>"+notes[i]+"</h1>";
     i++;
-    setTimeout(showNotes,2000);
-  } else voice();
+    setTimeout(showNotes,2300);
+  } else {
+    voice();
+  }
 }
 
+// 🎤 AUDIO SCREEN
 function voice(){
-  main.innerHTML="<h1>Listen to me ❤️</h1><button onclick='play()'>Play Voice 🎤</button><br><button onclick='proposal()'>Continue</button>";
+  document.getElementById("main").innerHTML =
+    "<h1>Listen to me… ❤️</h1>" +
+    "<button onclick='play()'>Play Voice 🎤</button><br>" +
+    "<button onclick='proposal()'>Continue</button>";
 }
 
-function play(){audio.play();}
+// 🔊 PLAY AUDIO
+function play(){
+  var a = document.getElementById("audio");
+  a.play().catch(function(){
+    alert("Tap again to play ❤️");
+  });
+}
 
+// 💍 PROPOSAL
 function proposal(){
-  main.innerHTML="<h1>Will You Be Mine? 💍</h1><button onclick='yes()'>YES ❤️</button><button class='no' id='noBtn'>NO 💔</button>";
-  var b=document.getElementById("noBtn");
-  b.onmouseover=function(){
-    b.style.left=Math.random()*80+"%";
-    b.style.top=Math.random()*80+"%";
+  document.getElementById("main").innerHTML =
+    "<h1>Will You Be Mine? 💍</h1>" +
+    "<button onclick='yes()'>YES ❤️</button>" +
+    "<button class='no' id='noBtn'>NO 💔</button>";
+
+  var b = document.getElementById("noBtn");
+
+  b.onmouseover = function(){
+    b.style.left = Math.random()*80 + "%";
+    b.style.top = Math.random()*80 + "%";
   };
 }
 
+// ❤️ FINAL SCREEN
 function yes(){
-  document.body.innerHTML="<div style='height:100vh;display:flex;justify-content:center;align-items:center;background:black'><h1 style='font-size:60px;color:pink'>❤️ I LOVE YOU ❤️</h1></div>";
+  document.body.innerHTML =
+    "<div style='height:100vh;display:flex;justify-content:center;align-items:center;background:black'>" +
+    "<h1 style='font-size:60px;color:pink;text-shadow:0 0 30px pink'>❤️ I LOVE YOU ❤️</h1>" +
+    "</div>";
 }
+
 </script>
 
 </body>
