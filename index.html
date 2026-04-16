@@ -8,82 +8,57 @@
 body{
   margin:0;
   overflow:hidden;
-  font-family:'Segoe UI', sans-serif;
-  background:radial-gradient(circle at center,#1a001f,#000);
+  font-family:Arial;
   color:white;
+}
+
+/* BACKGROUND IMAGES */
+.bg img{
+  position:fixed;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:2s;
+}
+
+/* DARK OVERLAY */
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:linear-gradient(to top, rgba(255,0,150,0.5), rgba(0,0,0,0.9));
+}
+
+/* CENTER CONTENT */
+.container{
+  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
+  flex-direction:column;
   text-align:center;
 }
 
-/* TEXT */
 h1{
-  font-size:42px;
-  text-shadow:0 0 25px #ff4da6;
-  min-height:70px;
+  font-size:45px;
+  text-shadow:0 0 20px pink;
 }
 
-/* BUTTON */
 button{
-  padding:12px 30px;
+  padding:12px 25px;
   border:none;
-  border-radius:30px;
+  border-radius:20px;
   background:#ff4da6;
   color:white;
   font-size:18px;
   margin-top:20px;
   cursor:pointer;
-  box-shadow:0 0 15px #ff4da6;
 }
 
-/* NO BUTTON */
 .no{
   position:absolute;
   background:#333;
-}
-
-/* HEARTS */
-.heart{
-  position:fixed;
-  bottom:-10px;
-  color:#ff4da6;
-  animation:float 6s linear infinite;
-}
-@keyframes float{
-  to{transform:translateY(-100vh);opacity:0;}
-}
-
-/* CURSOR HEART */
-.click-heart{
-  position:fixed;
-  color:#ff4da6;
-  animation:pop 1s forwards;
-}
-@keyframes pop{
-  to{transform:translateY(-40px);opacity:0;}
-}
-
-/* GLOW */
-.glow{
-  animation:glow 1s infinite alternate;
-}
-@keyframes glow{
-  from{text-shadow:0 0 20px #ff4da6;}
-  to{text-shadow:0 0 50px #ff99cc;}
-}
-
-/* SHAKE */
-@keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(5px);}
-  50%{transform:translateX(-5px);}
-  75%{transform:translateX(5px);}
-  100%{transform:translateX(0);}
-}
-.shake{
-  animation:shake 0.4s;
 }
 </style>
 
@@ -91,140 +66,108 @@ button{
 
 <body>
 
-<div id="main">
-  <h1 id="text">Hey Rithika ❤️</h1>
+<!-- BACKGROUND -->
+<div class="bg">
+  <img src="photo1.jpg">
+  <img src="photo2.jpg">
+</div>
+
+<div class="overlay"></div>
+
+<!-- MAIN -->
+<div class="container" id="main">
+  <h1>Hey Rithika ❤️</h1>
   <button onclick="start()">Start</button>
 </div>
 
+<!-- AUDIO -->
+<audio id="audio" src="voice.mp3"></audio>
+
 <script>
 
-/* FLOATING HEARTS */
-setInterval(()=>{
-  let h=document.createElement("div");
-  h.innerHTML="❤️";
-  h.className="heart";
-  h.style.left=Math.random()*100+"%";
-  h.style.fontSize=(10+Math.random()*20)+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},250);
+// SLIDESHOW
+var imgs = document.querySelectorAll(".bg img");
+var index = 0;
+imgs[0].style.opacity = 1;
 
-/* CLICK HEART EFFECT */
-document.addEventListener("click",(e)=>{
-  let h=document.createElement("div");
-  h.innerHTML="❤️";
-  h.className="click-heart";
-  h.style.left=e.clientX+"px";
-  h.style.top=e.clientY+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),1000);
-});
+setInterval(function(){
+  imgs.forEach(function(img){ img.style.opacity = 0; });
+  imgs[index].style.opacity = 1;
+  index = (index + 1) % imgs.length;
+},3000);
 
-/* TYPEWRITER */
-function typeText(text,callback){
-  let i=0;
-  let el=document.getElementById("text");
-  el.innerHTML="";
-  let t=setInterval(()=>{
-    el.innerHTML+=text[i];
-    i++;
-    if(i>=text.length){
-      clearInterval(t);
-      if(callback) setTimeout(callback,1200);
-    }
-  },40);
-}
-
-/* STORY */
-let notes=[
-"The first time I saw you…",
-"I didn’t expect anything…",
-"But something felt different…",
-"Your smile… it stayed with me…",
-"And slowly… you stayed in my heart…",
-"That bus ride…",
+// STORY
+var notes = [
+"Do you remember the first time we met…?",
+"It didn’t feel normal…",
+"It felt special…",
+"That bus ride… your smile…",
 "When you leaned on my shoulder…",
-"I didn’t want that moment to end…",
-"Our laughs… our silence…",
-"Everything felt right…",
+"Everything felt peaceful…",
+"Our rides… our laughs…",
+"Dancing together…",
+"I cooked for you…",
+"Those weren’t moments… they were feelings…",
 "I made mistakes…",
-"And I hurt you…",
+"I hurt you…",
 "But I never stopped loving you…",
 "Not even for a second…",
-"You were always there…",
-"In every thought…",
-"In every heartbeat…",
+"You were always in my heart…",
 "So today…",
-"I just want to ask you one thing…"
+"I just want to ask you something…"
 ];
 
-let i=0;
+var i = 0;
 
 function start(){
   showNotes();
 }
 
 function showNotes(){
-  if(i<notes.length){
-    typeText(notes[i],showNotes);
+  if(i < notes.length){
+    document.getElementById("main").innerHTML = "<h1>"+notes[i]+"</h1>";
     i++;
+    setTimeout(showNotes,2300);
   } else {
-    secretPhase();
+    voice();
   }
 }
 
-/* SECRET PHASE 😈 */
-function secretPhase(){
-  document.getElementById("main").innerHTML=
-    "<h1>Tap 5 times to unlock ❤️</h1>";
-  
-  let taps=0;
-
-  document.body.onclick=function(){
-    taps++;
-    if(taps>=5){
-      countdown();
-      document.body.onclick=null;
-    }
-  };
+// AUDIO SCREEN
+function voice(){
+  document.getElementById("main").innerHTML =
+    "<h1>Listen to me… ❤️</h1>" +
+    "<button onclick='play()'>Play Voice 🎤</button><br>" +
+    "<button onclick='proposal()'>Continue</button>";
 }
 
-/* COUNTDOWN */
-function countdown(){
-  let c=3;
-  function next(){
-    if(c>0){
-      document.getElementById("main").innerHTML="<h1>"+c+"...</h1>";
-      c--;
-      setTimeout(next,800);
-    } else {
-      proposal();
-    }
-  }
-  next();
+// PLAY AUDIO
+function play(){
+  var a = document.getElementById("audio");
+  a.play();
 }
 
-/* PROPOSAL */
+// PROPOSAL
 function proposal(){
-  document.getElementById("main").innerHTML=
-    "<h1 class='glow'>Will You Be Mine? 💍</h1>"+
-    "<button onclick='yes()'>YES ❤️</button>"+
+  document.getElementById("main").innerHTML =
+    "<h1>Will You Be Mine? 💍</h1>" +
+    "<button onclick='yes()'>YES ❤️</button>" +
     "<button class='no' id='noBtn'>NO 💔</button>";
 
-  let b=document.getElementById("noBtn");
+  var b = document.getElementById("noBtn");
 
-  b.onmouseover=function(){
-    b.style.left=Math.random()*80+"%";
-    b.style.top=Math.random()*80+"%";
-    b.classList.add("shake");
-    setTimeout(()=>b.classList.remove("shake"),300);
+  b.onmouseover = function(){
+    b.style.left = Math.random()*80 + "%";
+    b.style.top = Math.random()*80 + "%";
   };
 }
 
-/* FINAL */
+// FINAL SCREEN
 function yes(){
-  document.body.innerHTML=
-    "<h1 class='glow' style='font-size:65px'>❤️ I LOVE YOU ❤️</h1>";
+  document.body.innerHTML =
+    "<div style='height:100vh;display:flex;justify-content:center;align-items:center;background:black'>" +
+    "<h1 style='font-size:60px;color:pink;text-shadow:0 0 30px pink'>❤️ I LOVE YOU ❤️</h1>" +
+    "</div>";
 }
 
 </script>
