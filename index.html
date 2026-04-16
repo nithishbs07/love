@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>For You ❤️</title>
@@ -8,11 +8,10 @@
 body{
   margin:0;
   overflow:hidden;
-  font-family:Arial;
   color:white;
+  font-family:Poppins;
 }
 
-/* BACKGROUND IMAGES */
 .bg img{
   position:fixed;
   width:100%;
@@ -22,7 +21,6 @@ body{
   transition:2s;
 }
 
-/* DARK OVERLAY */
 .overlay{
   position:fixed;
   width:100%;
@@ -30,7 +28,6 @@ body{
   background:linear-gradient(to top, rgba(255,0,150,0.5), rgba(0,0,0,0.9));
 }
 
-/* CENTER CONTENT */
 .container{
   height:100vh;
   display:flex;
@@ -41,18 +38,18 @@ body{
 }
 
 h1{
-  font-size:45px;
+  font-size:50px;
   text-shadow:0 0 20px pink;
 }
 
 button{
+  margin-top:20px;
   padding:12px 25px;
   border:none;
-  border-radius:20px;
+  border-radius:25px;
   background:#ff4da6;
   color:white;
   font-size:18px;
-  margin-top:20px;
   cursor:pointer;
 }
 
@@ -61,43 +58,47 @@ button{
   background:#333;
 }
 </style>
-
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
 <div class="bg">
-  <img src="photo1.jpg">
-  <img src="photo2.jpg">
+  <img id="img1">
+  <img id="img2">
 </div>
 
 <div class="overlay"></div>
 
-<!-- MAIN -->
 <div class="container" id="main">
-  <h1>Hey Rithika ❤️</h1>
+  <h1>Hey Rithika… ❤️</h1>
   <button onclick="start()">Start</button>
 </div>
 
-<!-- AUDIO -->
-<audio id="audio" src="voice.mp3"></audio>
+<audio id="audio"></audio>
 
 <script>
 
-// SLIDESHOW
-var imgs = document.querySelectorAll(".bg img");
-var index = 0;
+// ✅ YOUR LINKS (ALREADY FIXED)
+document.getElementById("img1").src = "https://i.ibb.co/KzrP49hG/photo1-jpeg.jpg";
+document.getElementById("img2").src = "https://i.ibb.co/spWV2fMB/photo2-jpeg.jpg";
+document.getElementById("audio").src = "https://files.catbox.moe/vlrcxp.mp3";
+
+
+// 🔥 SHOW FIRST IMAGE
+let imgs = document.querySelectorAll(".bg img");
+let index = 0;
+
 imgs[0].style.opacity = 1;
 
-setInterval(function(){
-  imgs.forEach(function(img){ img.style.opacity = 0; });
-  imgs[index].style.opacity = 1;
-  index = (index + 1) % imgs.length;
+setInterval(()=>{
+  imgs.forEach(i=>i.style.opacity=0);
+  imgs[index].style.opacity=1;
+  index = (index+1)%imgs.length;
 },3000);
 
-// STORY
-var notes = [
+
+// ❤️ STORY
+let notes = [
 "Do you remember the first time we met…?",
 "It didn’t feel normal…",
 "It felt special…",
@@ -117,7 +118,7 @@ var notes = [
 "I just want to ask you something…"
 ];
 
-var i = 0;
+let i = 0;
 
 function start(){
   showNotes();
@@ -125,7 +126,8 @@ function start(){
 
 function showNotes(){
   if(i < notes.length){
-    document.getElementById("main").innerHTML = "<h1>"+notes[i]+"</h1>";
+    document.getElementById("main").innerHTML =
+    `<h1>${notes[i]}</h1>`;
     i++;
     setTimeout(showNotes,2300);
   } else {
@@ -133,41 +135,58 @@ function showNotes(){
   }
 }
 
-// AUDIO SCREEN
+
+// 🎤 VOICE
 function voice(){
-  document.getElementById("main").innerHTML =
-    "<h1>Listen to me… ❤️</h1>" +
-    "<button onclick='play()'>Play Voice 🎤</button><br>" +
-    "<button onclick='proposal()'>Continue</button>";
+  document.getElementById("main").innerHTML = `
+    <h1>Listen to me… ❤️</h1>
+    <button onclick="play()">Play Voice 🎤</button>
+    <br>
+    <button onclick="proposal()">Continue</button>
+  `;
 }
 
-// PLAY AUDIO
 function play(){
-  var a = document.getElementById("audio");
-  a.play();
+  document.getElementById("audio").play();
 }
 
-// PROPOSAL
+
+// 💍 PROPOSAL
 function proposal(){
-  document.getElementById("main").innerHTML =
-    "<h1>Will You Be Mine? 💍</h1>" +
-    "<button onclick='yes()'>YES ❤️</button>" +
-    "<button class='no' id='noBtn'>NO 💔</button>";
+  document.getElementById("main").innerHTML = `
+    <h1>Will You Be Mine? 💍</h1>
+    <button onclick="yes()">YES ❤️</button>
+    <button class="no" id="noBtn">NO 💔</button>
+  `;
 
-  var b = document.getElementById("noBtn");
+  let b = document.getElementById("noBtn");
 
-  b.onmouseover = function(){
+  b.onmouseover = ()=>{
     b.style.left = Math.random()*80 + "%";
     b.style.top = Math.random()*80 + "%";
   };
 }
 
-// FINAL SCREEN
+
+// ❤️ FINAL SCREEN
 function yes(){
-  document.body.innerHTML =
-    "<div style='height:100vh;display:flex;justify-content:center;align-items:center;background:black'>" +
-    "<h1 style='font-size:60px;color:pink;text-shadow:0 0 30px pink'>❤️ I LOVE YOU ❤️</h1>" +
-    "</div>";
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:black;
+    ">
+      <h1 style="
+        font-size:60px;
+        color:pink;
+        text-shadow:0 0 30px pink;
+      ">
+        ❤️ I LOVE YOU ❤️
+      </h1>
+    </div>
+  `;
 }
 
 </script>
